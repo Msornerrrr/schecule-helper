@@ -1,6 +1,7 @@
 const fetch = require('node-fetch');
 
-async function toMorse(text){
+/* transform text message into morse code */
+function toMorse(text){
     /* the fetch option for morse */
     const option = {
         method: 'GET',
@@ -11,15 +12,29 @@ async function toMorse(text){
     };
 
     /* the url endpoint for morse */
-    const endpoint = "https://api.funtranslations.com/translate/morse.json"
+    const endpoint = "https://api.funtranslations.com/translate/morse.json";
 
     /* encode the text */
-    const urlText = encodeURIComponent(text)
+    const urlText = encodeURIComponent(text);
 
-    const res = await fetch(`${endpoint}?text=${urlText}`, option);
-    const data = await res.json();
-    console.log(data);
-    return data.contents.translated;
+    let message = "app currently under repairing or internet issue...";
+    fetch(`${endpoint}?text=${urlText}`, option)
+        .then(res => {
+            // if there's internet issue
+            if(!res.ok){
+                throw new Error("internet request issue");
+            }
+            return res.json();
+        })
+        .then(data => { 
+            // change the default error message, only triggered if api connected successfully
+            message = data.contents.translated;
+        })
+        .catch(err => {
+            console.log(err);
+        })
+
+    return message;
 }
 
 module.exports = toMorse;
