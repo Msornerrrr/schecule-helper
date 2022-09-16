@@ -1,0 +1,16 @@
+{
+  "name": "courier-hackathon",
+  "version": "1.0.0",
+  "description": "this app utilize courier api to send message to email or message",
+  "main": "index.js",
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Richard Jiang",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.0.2",
+    "node-fetch": "^2.6.7"
+  }
+}
