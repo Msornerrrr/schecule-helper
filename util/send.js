@@ -1,7 +1,7 @@
 const fetch = require('node-fetch');
 
 /* send message to corresponding email or phone number in .env */
-function sendMessage(title, message){
+const sendMessage = async (title, message) => {
     /* do some validation for message */
     if(!title || !message) return;
 
@@ -30,11 +30,9 @@ function sendMessage(title, message){
             }
         })
     };
-
-    fetch('https://api.courier.com/send', courierOption)
-        .then(res => res.json())
-        .then(data => console.log(data))
-        .catch(err => console.error(err));
-}
+    const res = await fetch('https://api.courier.com/send', courierOption);
+    const data = await res.json();
+    console.log(data);
+};
 
 module.exports = sendMessage;

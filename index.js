@@ -1,8 +1,9 @@
+require('dotenv').config();
+// const pLimit = require('p-limit');
+
 const sendMessage = require('./util/send');
 const scrapeCourse = require('./util/scrape');
 const courseList = require('./db/target');
-
-require('dotenv').config();
 
 // main async function
 const main = async () => {
@@ -12,6 +13,15 @@ const main = async () => {
 
     // user expect spots -> 0
     // user expect pros -> 1
+
+    /* concurrent
+    const arr = [];
+    for(course in courseList){
+        arr.push(scrapeCourse(baseUrl + course));
+    }
+    const sectionList = await Promise.all(arr);
+    console.log(sectionList)
+    */
 
     // for each course
     for(course in courseList){
@@ -40,10 +50,10 @@ const main = async () => {
                         You are automatically unsubscribed from this course, if you wanna re-subscribe, click below:\n
                         ---> some link <---
                     `;
-                    sendMessage(title, message);
+                    await sendMessage(title, message);
 
                     // unsubscribe that course
-                    delete triggerType;
+                    delete courseList[course][section];
                 }
             }
             
@@ -58,19 +68,20 @@ const main = async () => {
                         Course Instructor: ${professor}\n
                         Course Type: ${type}\n
                         Professor ${professor} is gonna teach ${course.toUpperCase()} this semester for section ${section}\n
-                        Click the link to ratemyprofessors to see his/her/they ratings:\n
+                        Click the link to ratemyprofessors to see his/her/their ratings:\n
                         ---> https://www.ratemyprofessors.com/ <---
                     `;
-                    sendMessage(title, message);
+                    await sendMessage(title, message);
 
                     // unsubscribe that course
-                    delete triggerType;
+                    delete courseList[course][section];
                 }
             }
         }
     }
     // update database (targeted courses)
     console.log(courseList);
+
 }
 
 main();
