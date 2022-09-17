@@ -3,7 +3,7 @@ const fetch = require('node-fetch');
 /* send message to corresponding email or phone number in .env */
 function sendMessage(title, message){
     /* do some validation for message */
-    if(!message) return;
+    if(!title || !message) return;
 
     /* the fetch option for courier */
     const courierOption = {

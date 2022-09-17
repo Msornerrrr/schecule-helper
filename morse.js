@@ -1,7 +1,7 @@
 const fetch = require('node-fetch');
 
 /* transform text message into morse code */
-function toMorse(text){
+async function toMorse(text){
     /* the fetch option for morse */
     const option = {
         method: 'GET',
@@ -18,21 +18,12 @@ function toMorse(text){
     const urlText = encodeURIComponent(text);
 
     let message = "app currently under repairing or internet issue...";
-    fetch(`${endpoint}?text=${urlText}`, option)
-        .then(res => {
-            // if there's internet issue
-            if(!res.ok){
-                throw new Error("internet request issue");
-            }
-            return res.json();
-        })
-        .then(data => { 
-            // change the default error message, only triggered if api connected successfully
-            message = data.contents.translated;
-        })
-        .catch(err => {
-            console.log(err);
-        })
+    const res = await fetch(`${endpoint}?text=${urlText}`, option);
+    if(!res.ok){
+        throw new Error("internet request issue");
+    }
+    const data = await res.json();
+    message = data.contents.translated;
 
     return message;
 }
