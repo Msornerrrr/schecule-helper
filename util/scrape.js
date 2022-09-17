@@ -13,7 +13,7 @@ const scrapeCourse = async (url) => {
         // query to the base container of course section
         const coursesContainer = document.querySelector("#content-main > div.course-table > div.table-wrapper > div.scrollable > table > tbody");
 
-        // if the desired course is provided
+        // if the desired course is not provided
         if(!coursesContainer){
             return {
                 message: "Current course is NOT available for this semester..."
