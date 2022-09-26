@@ -1,7 +1,7 @@
 const fetch = require('node-fetch');
 
 /* send message to corresponding email or phone number in .env */
-const sendMessage = async (title, message) => {
+const sendMessage = async (title, message, email) => {
     /* do some validation for message */
     if(!title || !message) return;
 
@@ -16,7 +16,7 @@ const sendMessage = async (title, message) => {
         body: JSON.stringify({
             "message": {
                 "to": {
-                    "email": process.env.EMAIL,
+                    "email": email,
                     "phone_number": process.env.PHONENUMBER
                 },
                 "content": {

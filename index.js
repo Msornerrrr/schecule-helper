@@ -5,6 +5,37 @@ const sendMessage = require('./util/send');
 const scrapeCourse = require('./util/scrape');
 const courseList = require('./db/target');
 
+const express = require('express');
+const cors = require('cors');
+const mongoose = require('mongoose');
+
+const app = express();
+const userRouter = require('./router/user');
+const targetRouter = require('./router/target');
+
+app.use(express.json());
+app.use(cors());
+
+app.get('/', (req, res) => {
+    res.send('success');
+})
+
+app.use('/api/v1/users', userRouter);
+app.use('/api/v1/targets', targetRouter);
+
+// app.use((err, req, res, next) => {
+//     res.json({ msg: err.message });
+// });
+
+const PORT = process.env.PORT || 8080;
+
+mongoose.connect(process.env.MONGO_URI)
+    .then(() => app.listen(PORT, () => {
+        console.log(`Server is listening port ${PORT}...`);
+    }))
+    .catch(err => console.log(err));
+
+
 // main async function
 const main = async () => {
     // some global setting
@@ -31,7 +62,7 @@ const main = async () => {
         // for each section of a course
         for(section in courseList[course]){
             // whether if spots or if professor available
-            const triggerType = courseList[course][section];
+            const [triggerType, email] = courseList[course][section];
             const { professor, type, current, all, available } = sectionList[section];
 
             // when we check if there's available spot
@@ -50,7 +81,7 @@ const main = async () => {
                         You are automatically unsubscribed from this course, if you wanna re-subscribe, click below:\n
                         ---> some link <---
                     `;
-                    await sendMessage(title, message);
+                    await sendMessage(title, message, email);
 
                     // unsubscribe that course
                     delete courseList[course][section];
@@ -71,7 +102,7 @@ const main = async () => {
                         Click the link to ratemyprofessors to see his/her/their ratings:\n
                         ---> https://www.ratemyprofessors.com/ <---
                     `;
-                    await sendMessage(title, message);
+                    await sendMessage(title, message, email);
 
                     // unsubscribe that course
                     delete courseList[course][section];
@@ -81,7 +112,7 @@ const main = async () => {
     }
     // update database (targeted courses)
     console.log(courseList);
-
 }
 
-main();
+// run every 5 minutes
+// setInterval(main, 5*60*1000);

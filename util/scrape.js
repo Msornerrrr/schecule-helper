@@ -15,9 +15,7 @@ const scrapeCourse = async (url) => {
 
         // if the desired course is not provided
         if(!coursesContainer){
-            return {
-                message: "Current course is NOT available for this semester..."
-            };
+            return null;
         }
 
         // for each course element
