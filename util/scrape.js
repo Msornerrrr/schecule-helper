@@ -22,10 +22,10 @@ const scrapeCourse = async (url) => {
         for(let i = 1; i < coursesContainer.children.length; i++){
             const course =  coursesContainer.childNodes[i]
 
-            // get professor, type, and section
+            // get professor, form, and section
             const section = course.dataset.sectionId;
             const professor = course.childNodes[6].textContent;
-            const type = course.childNodes[2].textContent;
+            const form = course.childNodes[2].textContent;
             
 
             // deal with course available space
@@ -39,7 +39,7 @@ const scrapeCourse = async (url) => {
                 available = !(current >= all);
             }
             
-            info[section] = { professor, type, current, all, available };
+            info[section] = { professor, form, current, all, available };
         }
         return info;
     });

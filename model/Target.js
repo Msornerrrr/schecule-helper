@@ -11,10 +11,9 @@ const targetSchema = mongoose.Schema({
         max: 99999,
         require: [true, 'course section must be provided']
     },
-    user: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
-        required: [true, 'user must be provided']
+    email: {
+        type: String,
+        required: [true, 'email must be provided']
     },
     type: {
         type: Number,
@@ -24,6 +23,7 @@ const targetSchema = mongoose.Schema({
     }
 });
 
-// targetSchema.index({ title: 1, section: 1, user: 1, type: 1 }, { unique: false });
+// index to make those four in combined unique (already indexed)
+// targetSchema.index({ title: 1, section: 1, email: 1, type: 1 }, { unique: true });
 
 module.exports = mongoose.model('Target', targetSchema);
