@@ -5,6 +5,7 @@ const scrapeCourse = require('./util/scrape');
 const sendMessage = require('./util/send');
 
 
+// check if spot available and send email to user
 const checkSpots = async (
     { _id, email, title, section },
     { professor, form, current, all, available }
@@ -21,8 +22,8 @@ const checkSpots = async (
             Click the link to quickly nevigate and register for your course:\n
             ---> https://my.usc.edu/ <---
             \n
-            You are automatically unsubscribed from this course, if you wanna re-subscribe, click below:\n
-            ---> some link <---
+            You are automatically unsubscribed from this course\n
+            if you wanna re-subscribe, just make a new request\n
         `;
         await sendMessage(sentTitle, sentessage, email);
 
@@ -31,6 +32,7 @@ const checkSpots = async (
     }
 };
 
+// check if professor available and send email to user
 const checkProfessor = async (
     { _id, email, type, title, section },
     { professor, form, current, all, available }
@@ -44,8 +46,8 @@ const checkProfessor = async (
             Course Instructor: ${professor}\n
             Course Type: ${form}\n
             Professor ${professor} is gonna teach ${title.toUpperCase()} this semester for section ${section}\n
-            Click the link to ratemyprofessors to see his/her/their ratings:\n
-            ---> https://www.ratemyprofessors.com/ <---
+            You are automatically unsubscribed from this course\n
+            if you wanna re-subscribe, just make a new request\n
         `;
         await sendMessage(sentTitle, sentMessage, email);
 
@@ -65,18 +67,21 @@ const main = async () => {
     // get all unique courses in the database
     const titleList = await Target.distinct('title');
 
+    
+
     // for each course title
     titleList.forEach(async (title) => {
         // get course data
-        const courseData = await scrapeCourse(baseUrl + title);
+        const courseSections = await scrapeCourse(baseUrl + title);
 
         // get all section list in demand
-        const sectionList = await Target.find({ title }).distinct('section');
+        const desiredSections = await Target.find({ title }).distinct('section');
         
-        sectionList.forEach(async (section) => {
+        // for each section
+        desiredSections.forEach(async (section) => {
             // get course data
+            const sectionInfo = courseSections[section];
             // sectionInfo: { professor, form, current, all, available }
-            const sectionInfo = courseData[section]
 
             // get checkList: who to send, which type
             const checkList = await Target.find({ title, section });
