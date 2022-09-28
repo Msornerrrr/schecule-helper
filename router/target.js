@@ -9,6 +9,6 @@ const {
 } = require('../controller/target');
 
 router.route('/').get(getAllTarget).post(addCourse);
-router.route('/:id').get(getCourse).delete(deleteCourse);
+router.route('/:id').get(getCourse);
 
 module.exports = router;

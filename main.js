@@ -67,8 +67,6 @@ const main = async () => {
     // get all unique courses in the database
     const titleList = await Target.distinct('title');
 
-    
-
     // for each course title
     titleList.forEach(async (title) => {
         // get course data

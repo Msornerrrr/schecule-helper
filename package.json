@@ -2,10 +2,10 @@
   "name": "courier-hackathon",
   "version": "1.0.0",
   "description": "this app utilize courier api to send message to email or message",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
-    "start": "node index.js",
-    "dev": "nodemon index.js",
+    "start": "node app.js",
+    "dev": "nodemon app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Richard Jiang",
@@ -16,6 +16,7 @@
     "express": "^4.18.1",
     "express-async-errors": "^3.1.1",
     "install": "^0.13.0",
+    "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.6.1",
     "node-fetch": "^2.6.7",
     "npm": "^8.19.2",

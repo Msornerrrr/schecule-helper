@@ -1,11 +1,21 @@
 require('dotenv').config();
+
+// const jwt = require('jsonwebtoken');
+// const sendMessage = require('../util/send');
+
 const Target = require('../model/Target');
 const scrapeCourse = require('../util/scrape');
 
 const getAllTarget = async (req, res) => {
     try{
-        const target = await Target.find(req.query);
-        res.status(200).json(target);
+        const targets = await Target.find(req.query);
+
+        const count = targets.length;
+        const filteredTargets = targets.map(target => {
+            const { title, section } = target;
+            return { title, section };
+        });
+        res.status(200).json({ data: filteredTargets, count });
     } catch(err){
         res.status(404).json({ message: err.message });
     }
@@ -30,19 +40,27 @@ const addCourse = async (req, res) => {
         }
 
         // validate email
-        const ending = email.split('@')[1];
-        if(!ending){
-            throw new Error("You don't even provide @ ???");
-        }
-        const [symbol, domain] = ending.split('.');
-        if(!domain){
-            throw new Error("You don't even provide . ???");
-        }
-        if(symbol.toLowerCase() !== "usc" || domain.toLowerCase() !== "edu"){
-            throw new Error("You are not trojan, are you bruins sneaking around ?!!");
-        }
+        const uniqueEmails = await Target.distinct('email');
+        if(!(email in uniqueEmails)){
+            const ending = email.split('@')[1];
+            if(!ending){
+                throw new Error("You don't even provide @ ???");
+            }
+            if(ending.toLowerCase() !== "usc.edu"){
+                throw new Error("You are not trojan, are you bruins sneaking around ?!!");
+            }
 
-        // need further validation to see if you're true trojan
+            /* email verification on later version
+            const token = jwt.sign({ id: _id}, process.env.JWT_SECRET);
+            await sendMessage(
+                "USC Class Notification: Verify Your Email!", 
+                `It's your first time to use the notification helper, so we just wanna verify your email\n
+                Please copy and paste the verifying code below\n
+                Your code: ${token}\n`, 
+                email
+            );
+            */
+        }
 
         // type valided by mongoose
 
@@ -63,6 +81,7 @@ const getCourse = async (req, res) => {
     }
 }
 
+/* delete is disabled
 const deleteCourse = async (req, res) => {
     try{
         const id = req.params.id;
@@ -75,10 +94,10 @@ const deleteCourse = async (req, res) => {
         res.status(404).json({message: err.message});
     }
 }
+*/
 
 module.exports = {
     getAllTarget,
     addCourse,
     getCourse,
-    deleteCourse
 }

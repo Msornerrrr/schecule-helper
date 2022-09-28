@@ -23,7 +23,8 @@ const targetSchema = mongoose.Schema({
     }
 });
 
-// index to make those four in combined unique (already indexed)
+// index to make those four in combined unique
+// already indexed
 // targetSchema.index({ title: 1, section: 1, email: 1, type: 1 }, { unique: true });
 
 module.exports = mongoose.model('Target', targetSchema);
