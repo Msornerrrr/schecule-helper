@@ -26,4 +26,4 @@ mongoose.connect(process.env.MONGO_URI)
     .catch(err => console.log(err));
 
 /* run every certain minutes */
-// setInterval(main, process.env.FREQUENCY * 60 * 1000);
+setInterval(main, process.env.FREQUENCY * 60 * 1000);

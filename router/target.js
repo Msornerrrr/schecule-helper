@@ -4,8 +4,7 @@ const router = express.Router();
 const {
     getAllTarget,
     addCourse,
-    getCourse,
-    deleteCourse
+    getCourse
 } = require('../controller/target');
 
 router.route('/').get(getAllTarget).post(addCourse);
