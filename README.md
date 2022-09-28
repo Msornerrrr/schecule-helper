@@ -1,4 +1,5 @@
 # courier-hackathon
+1 spot available for class ...
 
 ## Inspiration
 Many students at USC paying their expensive tuition cannot successfully registered for their desired course.
