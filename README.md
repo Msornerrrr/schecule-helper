@@ -1,4 +1,4 @@
-# courier-hackathon
+# USC Class Notification
 1 spot available for class ...
 
 ## Inspiration
